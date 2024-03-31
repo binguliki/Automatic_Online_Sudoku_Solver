@@ -5,7 +5,7 @@ This project is a Sudoku solver that utilizes a combination of Deep learning and
 ## Features
 
 - **Sudoku Recognition**: The solver can scan Sudoku puzzles from images using image processing techniques.
-- **Machine Learning Model**: Utilizes a deep learning model to recognize and understand the puzzle layout.
+- **Deep Learning Model**: Utilizes a deep learning model to recognize and understand the puzzle layout.
 - **Backtracking Algorithm**: Applies a backtracking algorithm to find the solution to the Sudoku puzzle.
 - **Web Interface**: Automatically fills the solved Sudoku puzzle on a website.
 
