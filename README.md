@@ -1,6 +1,6 @@
 # Sudoku Solver using Deep Learning and Backtracking Algorithm
 
-This project is a Sudoku solver that utilizes a combination of Deep learning and a backtracking algorithm to solve Sudoku puzzles. The solver is capable of scanning Sudoku puzzles from images, applying a deep learning model to recognize and understand the puzzle layout, and then using a backtracking algorithm to find the solution and a feature of automatically filling the grid for you in the website , all you have to do is just click.
+This project is a Sudoku solver that utilizes a combination of Deep learning and a backtracking algorithm to solve Sudoku puzzles. The solver is capable of scanning Sudoku puzzles from images, applying a deep learning model to recognize and understand the puzzle layout, and then using a backtracking algorithm to find the solution and a feature of `automatically` filling the grid for you in the website , all you have to do is just click.
 
 ## Features
 
@@ -14,6 +14,12 @@ This project is a Sudoku solver that utilizes a combination of Deep learning and
 - Python 3.x
 - OpenCV (for image processing)
 - TensorFlow (for machine learning model)
+
+## Demonstration
+
+
+https://github.com/binguliki/Automatic_Online_Sudoku_Solver/assets/138435877/dd9b1655-9ba3-4a45-9fcb-c780b53a6ab5
+
 
 ## Contributing
 
