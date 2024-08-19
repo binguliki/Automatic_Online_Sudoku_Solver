@@ -1,0 +1,8 @@
+Flask
+keras
+matplotlib
+numpy
+opencv_python
+pandas
+scikit_learn
+tensorflow-cpu

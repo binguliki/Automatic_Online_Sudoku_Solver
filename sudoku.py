@@ -1,14 +1,9 @@
-import pyautogui as pg
-import time
 import cv2 
 import numpy as np
 import os
 from keras.models import load_model
-################################# INPUT ########################################################################3
-Imagepath = "/Users/Bingumalla Likith/Desktop/Projects/Sudoku_Solver/image.png"
-height = 450
-width = 450
-threshold = 0.90
+
+################################# INPUT ########################################################################
 def preprocess(img):
     imgGray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) #converts the image to grey scale
     imgBlur = cv2.GaussianBlur(imgGray,(5,5),1) #add gaussian blurr
@@ -50,10 +45,10 @@ def splitBoxes(img):
             grid.append(box)
     return grid
 
-def imagescanning(boxes):
+def imagescanning(boxes , threshold):
     numbers = []
-    input = "/Users/Bingumalla Likith/Desktop/Projects/Sudoku_Solver/New_Model_trained.h5"
-    model = load_model(input)
+    model_path = "New_Model_trained.h5"
+    model = load_model(model_path)
 
     print("Scanning Your Sudoku .....")
     for i in range(81):
@@ -84,48 +79,34 @@ def imagescanning(boxes):
 
     return numbers
 
-#1.Prepare the image
-img = cv2.imread(Imagepath)
-img = cv2.resize(img,(width,height)) 
-imgThreshold = preprocess(img)
+def ScanSudoku(image , height = 450 , width = 450 , threshold = 0.90):
+    #1.Prepare the image
+    img = image
+    img = cv2.resize(img,(width,height)) 
+    imgThreshold = preprocess(img)
 
-#2.Find all contours
-contours,hierarchy = cv2.findContours(imgThreshold,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    #2.Find all contours
+    contours,hierarchy = cv2.findContours(imgThreshold,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
-#3.Find the biggest contour and use it as a sudoku
-biggest,maxArea = biggestContour(contours)
+    #3.Find the biggest contour and use it as a sudoku
+    biggest,maxArea = biggestContour(contours)
 
-if biggest.size != 0:
-    biggest = reorder(biggest) #we need all the points to be in a proper order so we use this function
-    pts1 = np.float32(biggest)
-    pts2 = np.float32([[0,0] , [width,0] , [0,height] , [width,height]])
-    matrix = cv2.getPerspectiveTransform(pts1,pts2)
-    imgWarpColored = cv2.warpPerspective(img,matrix,(width,height)) #cropping of the required sudoku 
-    imgWarpColored  = cv2.cvtColor(imgWarpColored,cv2.COLOR_BGR2GRAY) #convert it into grey scale
+    if biggest.size != 0:
+        biggest = reorder(biggest) #we need all the points to be in a proper order so we use this function
+        pts1 = np.float32(biggest)
+        pts2 = np.float32([[0,0] , [width,0] , [0,height] , [width,height]])
+        matrix = cv2.getPerspectiveTransform(pts1,pts2)
+        imgWarpColored = cv2.warpPerspective(img,matrix,(width,height)) #cropping of the required sudoku 
+        imgWarpColored  = cv2.cvtColor(imgWarpColored,cv2.COLOR_BGR2GRAY) #convert it into grey scale
 
-#4 Split each grid and find the number present in it
-boxes = splitBoxes(imgWarpColored)
-numbers = imagescanning(boxes)
+    #4 Split each grid and find the number present in it
+    boxes = splitBoxes(imgWarpColored)
+    numbers = imagescanning(boxes , threshold)
+    return numbers
 
 ###########################  SOLVING AND OUTPUT #################################################
-grid = []
 
-def output(grid):
-    str_fin = []
-    for i in grid:
-        for j in i:
-            str_fin.append(str(j))
-    ready = input('\nAre you ready!!')
-    if ready =='yes':
-        time.sleep(10)
-        for num in range(len(str_fin)):
-            pg.press(str_fin[num])
-            pg.hotkey('right')
-            if (num+1)%9 == 0 :
-                pg.hotkey('down')
-                for i in range(9): pg.hotkey('left')
-
-def present(c_row,c_col,x):
+def is_valid(grid , c_row,c_col,x):
     #check if it is present in that column
     for i in range(0,9):
         if grid[i][c_col] == x  and i!=c_row:
@@ -147,36 +128,16 @@ def present(c_row,c_col,x):
     return True
 
 #Applying backtracking algorithm
-def solve(grid):
+def Solve(grid):
     for i in range(0,9):
         for j in range(0,9):
             if grid[i][j] == 0:
                 for num in range(1,10):
-                    if present(i,j,num):
+                    if is_valid(grid , i , j ,num):
                         grid[i][j] = num
-                        solve(grid)
+                        if Solve(grid):
+                            return True
                         grid[i][j] = 0
-                return 
-    print('Your Ouput Sudoku ...')
-    for i in grid:
-        print(i)
-    output(grid)
-
-while(True):
-    count = 0
-    for i in range(0,9):
-        temp = []
-        for j in range(0,9):
-           temp.append(numbers[count])
-           count+=1
-        grid.append(temp)
-    break
-
-print("")
-print('Your input sudoku..')
-for i in grid:
-    print(i)
-
-solve(grid)
-
+                return False
+    return True
                     

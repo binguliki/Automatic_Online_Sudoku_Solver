@@ -11,7 +11,6 @@ import cv2
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-import pickle
 
 # Pre-initialized terms
 path = '/Users/Bingumalla Likith/Desktop/Projects/Sudoku_Solver/myData'

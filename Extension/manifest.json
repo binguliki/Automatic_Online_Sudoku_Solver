@@ -1,0 +1,12 @@
+{
+    "name" : "Sudoku Solver",
+    "description" : "This extension helps to solve sudoku automatically , Works on www.sudoku.com",
+    "version" : "0.0.1",
+    "manifest_version" : 3,
+    "icons" : {
+        "128" : "icon.png"
+    },
+    "action":{
+        "default_popup" : "popup.html"
+    }
+}
