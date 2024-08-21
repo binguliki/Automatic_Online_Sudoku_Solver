@@ -5,4 +5,4 @@ numpy
 opencv_python
 pandas
 scikit_learn
-tensorflow
+tensorflow-cpu

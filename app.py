@@ -2,6 +2,10 @@ from flask import Flask , jsonify , request
 from sudoku import ScanSudoku , Solve
 import numpy as np
 import cv2 
+import os
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 app = Flask(__name__)
 
@@ -40,6 +44,6 @@ def sudoku_api():
         return jsonify({"solved" : "False"})
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run()
 
 
