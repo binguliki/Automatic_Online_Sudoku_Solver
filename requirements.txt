@@ -6,3 +6,4 @@ opencv_python
 pandas
 scikit_learn
 tensorflow-cpu
+gunicorn
